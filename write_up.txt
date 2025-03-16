@@ -23,6 +23,12 @@ XML 속성
 	android:padding="30dp" // LinearLayout에 지정하면 그 안의 요소들이 경계선에서 30dp만큼 떨어짐
 	android:layout_margin="20dp" // 위젯과 위젯 사이에 여유를 둠
 
+	5-1. 글자 크기 단위
+	pt(포인트)
+	px(픽셀)
+	dp(Density independent Pixel): 밀도 독립적 픽셀, 160dpi 기준
+	sp(Scale independent Pixel): 축척 독립적 픽셀
+
 	6. visibility 속성
 	android:visibility="visible" // 보이는 상태
 	android:visibility="invisible" // 안보이지만 자리는 차지

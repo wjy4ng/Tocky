@@ -4,61 +4,53 @@
     import android.graphics.Color;
     import android.net.Uri;
     import android.os.Bundle;
+    import android.view.MotionEvent;
     import android.view.View;
     import android.widget.Button;
+    import android.widget.EditText;
+    import android.widget.TextView;
     import android.widget.Toast;
 
     import androidx.appcompat.app.AppCompatActivity;
 
     public class MainActivity extends AppCompatActivity {
-
-        Button btn_nate, btn_911, btn_gallery, btn_exit;
+        EditText t1, t2;
+        Button plus, minus, multiple, divide;
+        TextView Txt_result;
+        String num1, num2;
+        Integer result;
 
         @Override
         protected void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             setContentView(R.layout.activity_main);
+            // 제목 설정
+            setTitle("텍스트 계산기");
 
-            // xml 파일의 버튼 객체 연결
-            btn_nate = findViewById(R.id.btn_nate);
-            btn_911 = findViewById(R.id.btn_911);
-            btn_gallery = findViewById(R.id.btn_gallery);
-            btn_exit = findViewById(R.id.btn_exit);
+            // 위젯 연결
+            t1.findViewById(R.id.t1);
+            t2.findViewById(R.id.t2);
+            plus.findViewById(R.id.plus);
+            minus.findViewById(R.id.minus);
+            multiple.findViewById(R.id.multiple);
+            divide.findViewById(R.id.divide);
+            Txt_result.findViewById(R.id.Txt_result);
 
-            // 버튼 색상 지정
-            btn_nate.setBackgroundColor(Color.GRAY);
-            btn_911.setBackgroundColor(Color.GREEN);
-            btn_gallery.setBackgroundColor(Color.RED);
-            btn_exit.setBackgroundColor(Color.YELLOW);
+            // 버튼 색상 변경
+            plus.setBackgroundColor(Color.RED);
+            minus.setBackgroundColor(Color.GRAY);
+            multiple.setBackgroundColor(Color.YELLOW);
+            divide.setBackgroundColor(Color.GREEN);
 
-            btn_nate.setOnClickListener(new View.OnClickListener(){
+            // plus 클릭시
+            plus.setOnTouchListener(new View.OnTouchListener() {
                 @Override
-                public void onClick(View view){
-                    Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("http://m.nate.com"));
-                    startActivity(mIntent);
-                }
-            });
-
-            btn_911.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("tel:/911"));
-                    startActivity(mIntent);
-                }
-            });
-
-            btn_gallery.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    Intent mIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("content://media/internal/images/media"));
-                    startActivity(mIntent);
-                }
-            });
-
-            btn_exit.setOnClickListener(new View.OnClickListener(){
-                @Override
-                public void onClick(View view){
-                    finish();
+                public boolean onTouch(View v, MotionEvent event) {
+                    num1 = t1.getText().toString();
+                    num2 = t2.getText().toString();
+                    result = Integer.parseInt(num1) + Integer.parseInt(num2);
+                    Txt_result.setText("계산 결과 : "+ result.toString());
+                    return false;
                 }
             });
         }

@@ -1,7 +1,8 @@
 <resources>
     <string name="app_name">BaseApp</string>
-    <string name="strBtn_nate">네이트 홈페이지 열기</string>
-    <string name="strBtn_911">911 응급전화 걸기</string>
-    <string name="strBtn_gallery">갤러리 열기</string>
-    <string name="strBtn_exit">끝내기</string>
+    <string name="strBtn_plus">+</string>
+    <string name="strBtn_minus">-</string>
+    <string name="strBtn_multiple">*</string>
+    <string name="strBtn_divide">/</string>
+    <string name="strTxt_result">계산 결과 :</string>
 </resources>
