@@ -1,0 +1,38 @@
+XML 속성
+
+	1. id 속성
+	android:id=“@+id/textView1” // id를 textView1로 지정한다는 뜻
+
+	2. layout 속성
+	android:layout_width = “match_parent” // match_parent : 부모(레이아웃)에 맞춘다는 뜻
+	android:layout_height = “wrap_content” // wrap_content : 글자에 맞춘다는 뜻
+
+	// AVD 해상도를 1080x1920 으로 설정한다는 뜻
+	android:layout_width = “1080px”
+	android:layout_height = “1920px”
+
+	3. background 속성
+	activity_main.xml 에서
+	android:background = "#ff0000" // 뒷배경을 red 로
+
+	4. orientation 속성
+	android:orientation="vertical" // LinearLayout 에서 뷰를 "세로" 방향으로 정렬
+	android:orientation="horizontal" // LinearLayout 에서 뷰를 "가로" 방향으로 정렬
+
+	5. padding, layout_margin 속성
+	android:padding="30dp" // LinearLayout에 지정하면 그 안의 요소들이 경계선에서 30dp만큼 떨어짐
+	android:layout_margin="20dp" // 위젯과 위젯 사이에 여유를 둠
+
+	6. visibility 속성
+	android:visibility="visible" // 보이는 상태
+	android:visibility="invisible" // 안보이지만 자리는 차지
+	android:visibility="gone" // 안보이고 자리도 사라짐
+
+
+	7. enabled, clickable 속성
+	android:enabled="true" or "false" // 위젯 동작 여부
+	android:clickable="true" or "false" // 클릭 가능 여부
+
+	8. rotation 속성
+	android:rotation="45" // 위젯을 45도 회전
+
