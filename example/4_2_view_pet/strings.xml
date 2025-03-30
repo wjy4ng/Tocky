@@ -1,0 +1,10 @@
+<resources>
+    <string name="app_name">My Application</string>
+    <string name="txt_title">선택을 시작하겠습니까?</string>
+    <string name="chb_start">시작함</string>
+    <string name="txt_question">좋아하는 애완동물은?</string>
+    <string name="rdo_dog">강아지</string>
+    <string name="rdo_cat">고양이</string>
+    <string name="rdo_rabbit">토끼</string>
+    <string name="btn_choice">선택 완료</string>
+</resources>

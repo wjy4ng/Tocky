@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="30dp"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_title"
+        android:text="@string/txt_title"
+        android:textSize="20sp"/>
+
+    <CheckBox
+        android:id="@+id/chb_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/chb_start"
+        android:layout_marginTop="20dp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/txt_question"
+        android:text="@string/txt_question"
+        android:textSize="20sp"
+        android:padding="10dp"
+        android:visibility="invisible"/>
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/rdo_answer"
+        android:visibility="invisible">
+
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/rdo_dog"
+            android:text="@string/rdo_dog"/>
+
+        <RadioButton
+            android:id="@+id/rdo_cat"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:text="@string/rdo_cat" />
+        <RadioButton
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:id="@+id/rdo_rabbit"
+            android:text="@string/rdo_rabbit"/>
+    </RadioGroup>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btn_choice"
+        android:text="@string/btn_choice"
+        android:visibility="invisible"
+        android:layout_marginTop="10dp"/>
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/img_pet"
+        android:visibility="invisible"/>
+</LinearLayout>
