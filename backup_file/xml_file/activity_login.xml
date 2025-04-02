@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="50dp"
+    android:background="#E3E1D7">
+
+    <ImageView
+        android:id="@+id/logoImage"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:src="@drawable/app_image" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/appName"
+        android:layout_below="@+id/logoImage"
+        android:text="@string/appTitle"
+        android:textSize="20sp"
+        android:textAlignment="center"
+        android:textColor="#EB9275"
+        android:textStyle="bold"/>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/emailLayout"
+        android:layout_below="@+id/appName"
+        android:layout_marginTop="30dp">
+
+        <EditText
+            android:id="@+id/emailEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/logoImage"
+            android:hint="@string/emailEditText"
+            android:inputType="textEmailAddress" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <com.google.android.material.textfield.TextInputLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/passwordLayout"
+        android:layout_below="@+id/emailLayout">
+
+        <EditText
+            android:id="@+id/passwordEditText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/passwordEditText"
+            android:inputType="textPassword" />
+    </com.google.android.material.textfield.TextInputLayout>
+
+    <CheckBox
+        android:id="@+id/autologinCheckBox"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/passwordLayout"
+        android:layout_marginStart="200dp"
+        android:text="@string/autologinCheckBox" />
+
+    <Button
+        android:id="@+id/loginButton"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/autologinCheckBox"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="@string/loginButton" />
+
+    <Button
+        android:id="@+id/findidButton"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/loginButton"
+        android:text="@string/findidButton" />
+
+    <Button
+        android:id="@+id/signupButton"
+        android:layout_width="160dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/loginButton"
+        android:layout_toEndOf="@+id/findidButton"
+        android:text="@string/signupButton" />
+
+</RelativeLayout>
