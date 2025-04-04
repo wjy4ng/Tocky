@@ -7,8 +7,8 @@
 
 ## 2. 로그인 후 메인 화면
 <p align="center">
-  <img src="img/main_tab_1.png>" align="center" width="32%">
-  <img src="img/main_tab_2.png>" align="center" width="32%">
-  <img src="img/main_tab_3.png>" align="center" width="32%">
+  <img src="img/main_tab_1.png" align="center" width="32%">
+  <img src="img/main_tab_2.png" align="center" width="32%">
+  <img src="img/main_tab_3.png" align="center" width="32%">
   <figcaption align="center">왼쪽부터 tab1(=목표설정탭), tab2(=홈화면), tab3(=설정탭)</figcaption></p>
   
