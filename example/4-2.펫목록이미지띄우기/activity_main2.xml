@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="20dp"
+    tools:context=".MainActivity">
+
+    <TextView
+        android:id="@+id/txtview_1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="선택을 시작하겠습니까?">
+    </TextView>
+
+    <CheckBox
+        android:id="@+id/chb_start"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="시작함">
+    </CheckBox>
+
+    <TextView
+        android:id="@+id/txtview_2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="좋아하는 땅은?"
+        android:visibility="invisible">
+    </TextView>
+
+    <RadioGroup
+        android:id="@+id/rdo_group_land"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
+
+        <RadioButton
+            android:id="@+id/rdo_hanra"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="한라산">
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rdo_chooja"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="추자도">
+        </RadioButton>
+        <RadioButton
+            android:id="@+id/rdo_beom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="범섬">
+        </RadioButton>
+    </RadioGroup>
+
+    <Button
+        android:id="@+id/btn_choice"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="선택 완료"
+        android:visibility="invisible">
+    </Button>
+
+    <ImageView
+        android:id="@+id/imgview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="invisible">
+    </ImageView>
+</LinearLayout>
+
