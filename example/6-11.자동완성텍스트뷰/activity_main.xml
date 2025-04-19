@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+    <AutoCompleteTextView
+        android:id="@+id/auto_complete_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:completionHint="입력하세요"
+        android:completionThreshold="2"
+        android:hint="자동완성텍스트뷰"/>
+
+    <MultiAutoCompleteTextView
+        android:id="@+id/multi_complete_txt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:completionHint="선택하세요"
+        android:completionThreshold="2"
+        android:hint="멀티완성텍스트뷰"/>
+
+</LinearLayout>
+
