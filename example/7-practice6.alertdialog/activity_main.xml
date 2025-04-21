@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:id="@+id/base_layout"
+    android:padding="20dp"
+    android:fitsSystemWindows="true"
+    tools:context=".MainActivity">
+
+   <RadioGroup
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:id="@+id/group_animal">
+
+      <RadioButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+         android:id="@+id/rdo_dog"
+         android:text="강아지"/>
+      <RadioButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+         android:id="@+id/rdo_cat"
+         android:text="고양이"/>
+      <RadioButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+         android:id="@+id/rdo_rabbit"
+         android:text="토끼"/>
+      <RadioButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+         android:id="@+id/rdo_horse"
+         android:text="말"/>
+   </RadioGroup>
+   <Button
+       android:layout_width="wrap_content"
+       android:layout_height="wrap_content"
+      android:id="@+id/btn_1"
+      android:text="그림보기"/>
+
+</LinearLayout>
+
