@@ -2,14 +2,26 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center"
     android:orientation="vertical"
-    android:background="@android:color/holo_orange_light">
+    android:background="#E3E1D7">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/scanBtn"
+        android:text="QR scan"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/showTotpBtn"
+        android:text="TOTP 보기"/>
 
     <TextView
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="second fragment"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        android:layout_height="wrap_content"
+        android:id="@+id/totpTxt"
+        android:gravity="center"
+        android:text="TOTP 코드가 여기에 표시됩니다."/>
 </LinearLayout>

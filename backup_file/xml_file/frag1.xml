@@ -3,13 +3,25 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@android:color/holo_blue_light">
-    
-    <TextView
+    android:background="#E3E1D7">
+
+    <EditText
+        android:id="@+id/urlEditText"
+        android:hint="사이트 주소 입력 (예: google.com)"
+        android:inputType="textUri"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="first fragment"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        android:gravity="center"/>
+        android:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/loadButton"
+        android:text="사이트 열기"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp" />
+
+    <WebView
+        android:id="@+id/webView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1" />
 </LinearLayout>

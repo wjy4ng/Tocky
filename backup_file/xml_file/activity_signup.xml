@@ -12,13 +12,15 @@
         android:id="@+id/btn_backspace"
         android:src="@drawable/btn_backspace"
         android:scaleType="centerCrop"
+        android:layout_marginTop="100dp"
         android:background="@android:color/transparent"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/signupEmailLayout"
-        android:layout_marginTop="150dp">
+        android:layout_below="@+id/btn_backspace"
+        android:layout_marginTop="50dp">
 
         <EditText
             android:layout_width="match_parent"
@@ -65,3 +67,4 @@
         android:layout_marginTop="30dp"/>
 
 </RelativeLayout>
+

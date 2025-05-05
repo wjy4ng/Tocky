@@ -3,13 +3,15 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="50dp"
-    android:background="#E3E1D7">
+    android:background="#E3E1D7"
+    android:padding="50dp">
 
     <ImageView
         android:id="@+id/logoImage"
         android:layout_width="match_parent"
         android:layout_height="150dp"
+        android:background="#b9c1bf"
+        android:layout_marginTop="50dp"
         android:src="@drawable/app_image" />
 
     <TextView
@@ -18,9 +20,8 @@
         android:id="@+id/appName"
         android:layout_below="@+id/logoImage"
         android:text="@string/appTitle"
-        android:textSize="20sp"
+        android:textSize="18sp"
         android:textAlignment="center"
-        android:textColor="#EB9275"
         android:textStyle="bold"/>
 
     <com.google.android.material.textfield.TextInputLayout
@@ -54,7 +55,7 @@
     </com.google.android.material.textfield.TextInputLayout>
 
     <CheckBox
-        android:id="@+id/autologinCheckBox"
+        android:id="@+id/autoLoginCheckBox"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/passwordLayout"
@@ -65,24 +66,16 @@
         android:id="@+id/loginButton"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/autologinCheckBox"
+        android:layout_below="@+id/autoLoginCheckBox"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="10dp"
         android:text="@string/loginButton" />
 
     <Button
-        android:id="@+id/findidButton"
-        android:layout_width="160dp"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/loginButton"
-        android:text="@string/findidButton" />
-
-    <Button
         android:id="@+id/signupButton"
-        android:layout_width="160dp"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/loginButton"
-        android:layout_toEndOf="@+id/findidButton"
         android:text="@string/signupButton" />
 
 </RelativeLayout>

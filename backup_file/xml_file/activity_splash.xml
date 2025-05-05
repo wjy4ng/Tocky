@@ -19,9 +19,9 @@
         android:id="@+id/splash_text"
         android:text="@string/splash_text"
         android:layout_below="@+id/splash_logo"
-        android:textSize="25sp"
+        android:textSize="18sp"
         android:textAlignment="center"
-        android:textColor="#EB9275"
         android:textStyle="bold"
         android:visibility="gone"/>
 </RelativeLayout>
+
