@@ -2,26 +2,46 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="center"
     android:orientation="vertical"
+    android:padding="10dp"
     android:background="#E3E1D7">
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/scanBtn"
-        android:text="QR scan"/>
-
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:id="@+id/showTotpBtn"
-        android:text="TOTP 보기"/>
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/totpTxt"
         android:gravity="center"
-        android:text="TOTP 코드가 여기에 표시됩니다."/>
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:text="📝 사용방법 📝"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="18sp"
+        android:background="@color/white"
+        android:layout_marginBottom="20dp"
+        android:text="@string/manualTxt"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <EditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/siteName"
+            android:hint="사이트 이름을 지정하세요. 예)깃허브"/>
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/scanBtn"
+            android:layout_marginStart="15dp"
+            android:text="QR 스캔"/>
+    </LinearLayout>
+
+    <!-- RecyclerView 추가 -->
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/siteRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="20dp"/>
 </LinearLayout>
