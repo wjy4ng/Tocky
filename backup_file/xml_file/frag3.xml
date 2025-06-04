@@ -4,6 +4,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:orientation="vertical"
+    android:padding="10dp"
     android:background="#E3E1D7">
 
     <Button
@@ -11,5 +12,11 @@
         android:layout_height="wrap_content"
         android:id="@+id/logoutButton"
         android:text="로그아웃"/>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/deleteAccountButton"
+        android:text="계정 삭제"/>
 
 </LinearLayout>
