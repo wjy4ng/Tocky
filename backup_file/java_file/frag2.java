@@ -20,12 +20,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -70,7 +74,9 @@ public class frag2 extends Fragment {
     private void setupRecyclerView() { // RecyclerView 생성
         siteRecyclerView.setLayoutManager(new LinearLayoutManager(requireContext()));
         siteRecyclerView.setHasFixedSize(true);
-        adapter = new SiteAdapter(requireContext(), siteList, executor, mainHandler);
+
+        String userEmail = getCurrentUserEmail();
+        adapter = new SiteAdapter(requireContext(), siteList, executor, mainHandler, userEmail);
         siteRecyclerView.setAdapter(adapter);
     }
 
@@ -103,11 +109,12 @@ public class frag2 extends Fragment {
 
     // 저장된 사이트 정보 복원하는 함수
     private void loadSavedSites(){
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+        SharedPreferences sharedPreferences = getUserTotpPreferences();
         siteList.clear();
+
         for (String key : sharedPreferences.getAll().keySet()){
-            if (key.startsWith("totp_secret_")){
-                String site = key.substring("totp_secret_".length());
+            if (key.contains("_totp_secret_")){
+                String site = key.substring(key.lastIndexOf("_totp_secret_") + "_totp_secret_".length());
                 siteList.add(site); // 저장된 site 이름으로 UI 복원
             }
         }
@@ -127,14 +134,22 @@ public class frag2 extends Fragment {
 
             String finalSite = site;
             executor.execute(()->{
-                saveSecretKey(finalSite, secret);
-                mainHandler.post(()->{
-                    if (!siteList.contains(finalSite)){ // 중복 사이트 방지
-                        siteList.add(finalSite); // 행 추가
-                        renderSiteList();
-                    }
-                    Toast.makeText(requireContext(), "비밀 키 저장됨 : "+secret, Toast.LENGTH_SHORT).show();
-                });
+                String email = getCurrentUserEmail();
+                if (email != null){
+                    String key = email + "_totp_secret_" + finalSite;
+                    saveSecretKey(key, secret);
+
+                    mainHandler.post(()->{
+                        if (!siteList.contains(finalSite)){ // 중복 사이트 방지
+                            siteList.add(finalSite); // 행 추가
+                            renderSiteList();
+                        }
+                        Toast.makeText(requireContext(), "비밀 키 저장됨 : "+secret, Toast.LENGTH_SHORT).show();
+                    });
+                } else{
+                    mainHandler.post(()->
+                            Toast.makeText(requireContext(), "이메일 없음, 저장 실패", Toast.LENGTH_SHORT).show());
+                }
             });
         } else{
             Toast.makeText(requireContext(), "QR 코드에서 비밀 키를 추출 할 수 없습니다.", Toast.LENGTH_SHORT).show();
@@ -162,16 +177,50 @@ public class frag2 extends Fragment {
 
 
     // 사이트 이름을 키로 사용해 SharedPreferences에 저장하는 함수
-    private void saveSecretKey(String site, String secret){
-        SharedPreferences sharedPreferences = requireActivity().getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE);
+    private void saveSecretKey(String key, String secret){
+        SharedPreferences sharedPreferences = getUserTotpPreferences();
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("totp_secret_"+site, secret);
+        editor.putString(key, secret);
         editor.apply();
     }
 
+    /*
+    사용자별 TOTP 별도 관리하는 함수
+    */
+
+    // 로그인된 사용자 이메일을 가져오는 함수
+    private String getCurrentUserEmail(){
+        try{
+            MasterKey masterKey = new MasterKey.Builder(requireContext())
+                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+                    .build();
+
+            SharedPreferences securePrefs = EncryptedSharedPreferences.create(
+                    requireContext(),
+                    "secure_prefs",
+                    masterKey,
+                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
+            );
+            return securePrefs.getString("email", null);
+        } catch (GeneralSecurityException | IOException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    // 현재 로그인한 사용자의 전용 TOTP 저장소를 반환
+    private SharedPreferences getUserTotpPreferences(){
+        String email = getCurrentUserEmail();
+        if (email == null || email.trim().isEmpty()){
+            Toast.makeText(requireContext(), "로그인 정보 없음", Toast.LENGTH_SHORT).show();
+            throw new IllegalStateException("로그인 정보 없음");
+        }
+        return requireActivity().getSharedPreferences("TOTP_PREFS_" + email, Context.MODE_PRIVATE);
+    }
 
     // XML 없이 동적으로 행을 추가하는 함수
-// 기존 TableRow → LinearLayout 변경된 구조 기준
+    // 기존 TableRow → LinearLayout 변경된 구조 기준
     private void renderSiteList() {
         adapter.setSiteList(new ArrayList<>(siteList));
     }

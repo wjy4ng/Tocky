@@ -39,7 +39,7 @@ public class SignupActivity extends AppCompatActivity {
         signupCompleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // 회원가입 기능 (간단한 예시)
+                // 회원가입 기능
                 String email = emailEditText.getText().toString();
                 String password = passwordEditText.getText().toString();
                 String confirmPassword = confirmPasswordEditText.getText().toString();
@@ -95,6 +95,9 @@ public class SignupActivity extends AppCompatActivity {
         if (result == -1){
             Toast.makeText(this, "회원가입에 실패했습니다.", Toast.LENGTH_SHORT).show();
         } else{
+            // String totpPrefName = "TOTP_PREFS_" + email;
+            // getSharedPreferences(totpPrefName, MODE_PRIVATE).edit().apply();
+
             Toast.makeText(this, "회원가입이 완료되었습니다.", Toast.LENGTH_SHORT).show();
             startActivity(new Intent(SignupActivity.this, LoginActivity.class));
             finish();
