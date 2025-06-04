@@ -86,13 +86,17 @@ public class LoginActivity extends AppCompatActivity {
                 } else {
                     // 로그인 성공: MainActivity로 이동
                     if(checkLogin(email, password)) {
+                        SharedPreferences.Editor editor = securePrefs.edit();
+                        editor.putString("email", email);
+
                         // 자동 로그인 체크되어 있는 경우
                         if(autoLoginCheckBox.isChecked()){
-                            SharedPreferences.Editor editor = securePrefs.edit();
                             editor.putBoolean("isLoggedIn", true);
-                            editor.putString("email", email);
-                            editor.apply();
+                        } else{
+                            editor.putBoolean("isLoggedIn", false);
                         }
+
+                        editor.apply();
                         Toast.makeText(LoginActivity.this, "로그인 성공", Toast.LENGTH_SHORT).show();
                         startActivity(new Intent(LoginActivity.this, MainActivity.class));
                         finish();

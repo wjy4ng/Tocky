@@ -3,6 +3,7 @@ package com.cookandroid.mobile_project;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,8 @@ import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.security.crypto.EncryptedSharedPreferences;
+import androidx.security.crypto.MasterKey;
 
 import com.cookandroid.mobile_project.util.TOTPUtil;
 
@@ -25,14 +28,19 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
     private final SharedPreferences prefs;
     private final ExecutorService executor;
     private final Handler mainHandler;
+    // TOTP 생성 버튼을 눌렀을 때 어떤 계정의 totp_secret인지 구분하기 위함
+    private String userEmail = null;
 
-    public SiteAdapter(Context context, List<String> siteList, ExecutorService executor, Handler mainHandler) {
+    public SiteAdapter(Context context, List<String> siteList, ExecutorService executor, Handler mainHandler, String userEmail) {
         this.context = context;
         this.siteList = siteList;
         this.executor = executor;
         this.mainHandler = mainHandler;
-        this.prefs = context.getSharedPreferences("secure_prefs", Context.MODE_PRIVATE);
+        this.userEmail = userEmail;
+
+        this.prefs = context.getSharedPreferences("TOTP_PREFS_" + userEmail, Context.MODE_PRIVATE);
     }
+
 
     @NonNull
     @Override
@@ -49,7 +57,9 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
         holder.totpTxt.setText("미생성");
 
         holder.generateBtn.setOnClickListener(v -> {
-            String secret = prefs.getString("totp_secret_" + site, null);
+            String key = userEmail + "_totp_secret_" + site;
+            String secret = prefs.getString(key, null);
+
             if (secret != null) {
                 executor.execute(() -> {
                     try {
@@ -59,11 +69,13 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
                         mainHandler.post(() -> Toast.makeText(context, "TOTP 생성 오류", Toast.LENGTH_SHORT).show());
                     }
                 });
+            } else{
+                Toast.makeText(context, "해당 사이트의 secret이 없습니다.", Toast.LENGTH_SHORT).show();
             }
         });
 
         holder.deleteBtn.setOnClickListener(v -> {
-            prefs.edit().remove("totp_secret_" + site).apply();
+            prefs.edit().remove(userEmail + "_totp_secret_" + site).apply();
             siteList.remove(position);
             notifyItemRemoved(position);
             notifyItemRangeChanged(position, siteList.size());
@@ -95,4 +107,3 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
         }
     }
 }
-
