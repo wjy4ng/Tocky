@@ -112,14 +112,14 @@ dependencies {
 ##### 📄 해결하지 못한 문제 또는 추후 개선 방향
 1. 네이버는 TOTP용 QR 코드를 제공하지 않음
 	- 구글, 깃허브, microsoft 계정, AWS,  Facebook, Instagram, dropbox, X, Notion, discord, zoom 등은 제공함.
-1. 여러 사이트의 TOTP를 저장할 수 있게 구현하기
-1. 사이트 추가, 삭제 버튼
-1. 설정탭에 뭐 넣을지 생각하기
+1. QR 코드 스캔 후 AVD 렉 발생
+1. 어플 잠금 기능으로 보안 강화
+1. 비밀키를 EncryptedSharedPreferences에 통합 관리해야하는데 EncryptedSharedPreferences와 일반 SharedPreferences를 같이 쓰고 있어 추후 일관성을 위해 코드를 수정해야할 필요가 있다.
 
 ---
-### 📌 6. 결론 및 소감
+### 📌 6. 기대효과 및 결론
+##### 📄 기대효과
 ##### 📄 프로젝트를 통해 배운 점
-##### 📄 팀워크 또는 협업 소감
 ---
 ### 📌 7. 부록
 ##### 📄 코드 일부
