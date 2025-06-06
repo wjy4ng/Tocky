@@ -44,13 +44,19 @@ public class SignupActivity extends AppCompatActivity {
                 String password = passwordEditText.getText().toString();
                 String confirmPassword = confirmPasswordEditText.getText().toString();
 
-                // 유효성 검사
+                // 칸이 비어있는지 검사
                 if (email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty()){
                     Toast.makeText(SignupActivity.this, "모든 필드를 채워주세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
+                // 비밀번호 동일한지 검사
                 if (!password.equals(confirmPassword)){
                     Toast.makeText(SignupActivity.this, "비밀번호가 일치하지 않습니다.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                // 이메일 형식 검사
+                if (!android.util.Patterns.EMAIL_ADDRESS.matcher(email).matches()) {
+                    Toast.makeText(SignupActivity.this, "올바른 이메일 형식을 입력하세요.", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
@@ -72,11 +78,10 @@ public class SignupActivity extends AppCompatActivity {
     // 회원가입 정보 DB에 삽입하는 메소드
     private void registerUser(String email, String password){
         database = dbHelper.getWritableDatabase();
-
-        // 중복 이메일 검사
         String checkEmailQuery = "select * from " + DBHelper.TABLE_USERS + " where " + DBHelper.COLUMN_EMAIL + " = ?";
         Cursor cursor = database.rawQuery(checkEmailQuery, new String[]{email});
 
+        // 중복 이메일 검사
         if (cursor.getCount() > 0){
             Toast.makeText(this, "이미 등록된 이메일입니다.", Toast.LENGTH_SHORT).show();
             cursor.close();
