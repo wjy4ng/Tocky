@@ -10,15 +10,12 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 
 import javax.crypto.Mac;
-import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
 
 import dev.samstevens.totp.code.DefaultCodeGenerator;
-import dev.samstevens.totp.code.DefaultCodeVerifier;
-import dev.samstevens.totp.time.SystemTimeProvider;
 
 public class TOTPUtil {
-    // TOTP를 클래스로 생성하는 방법
+    // TOTP 생성 메서드1: 라이브러리를 사용하는 방식
     public static String getCurrentTOTP(String secret) {
         // default algorithm (HMAC-SHA1) 사용하는 TOTP 코드 생성기 초기화
         DefaultCodeGenerator generator = new DefaultCodeGenerator();
@@ -34,7 +31,7 @@ public class TOTPUtil {
         }
     }
 
-    // TOTP를 직접 생성하는 방법
+    // TOTP 생성 메서드2: 수동 구현 방식
     @SuppressLint("DefaultLocale")
     public static String getCurrentTOTP2(String base32Secret){
         Base32 base32 = new Base32();
@@ -49,9 +46,14 @@ public class TOTPUtil {
 
             byte[] hmacResult = hmac.doFinal(data); // 시간 데이터를 넣어 HMAC 해시를 계산
 
-            // Dynamic truncation
-            int offset = hmacResult[hmacResult.length - 1] & 0x0F; // 배열의 마지막 바이트의 하위 4비트값을 오프셋으로 사용
-            int binary = ((hmacResult[offset] & 0x7f) << 24) | // 0x7f = 0b01111111 = 최상위 비트를 0(양수)으로 만드는 역할
+            /*
+               1. 배열의 마지막 바이트의 하위 4비트값을 0x0f와 and하여 오프셋으로 사용
+               2. 오프셋부터 4바이트를 조합
+               3. 첫 바이트는 0x7f와 and하여 부호 제거 (첫자리를 0으로 만들어 양수 유지)
+               4. 나머지는 0xff와 and하여 정수로 변환
+            */
+            int offset = hmacResult[hmacResult.length - 1] & 0x0F;
+            int binary = ((hmacResult[offset] & 0x7f) << 24) |
                             ((hmacResult[offset+1] & 0xff) << 16) | // 0xff : 부호 제거/안전한 정수로 변환 역할
                             ((hmacResult[offset+2] & 0xff) << 8) |
                             (hmacResult[offset+3] & 0xff);
@@ -62,19 +64,4 @@ public class TOTPUtil {
             throw new RuntimeException(e);
         }
     }
-
-
-    public static boolean verifyCode(String secret, String inputCode) {
-        // TOTP 생성기와 시스템 시간 공급자 초기화
-        DefaultCodeGenerator codeGenerator = new DefaultCodeGenerator();
-        SystemTimeProvider timeProvider = new SystemTimeProvider();
-
-        // 코드 검증기 생성, TOTP 갱신 주기 30초 설정
-        DefaultCodeVerifier verifier = new DefaultCodeVerifier(codeGenerator, timeProvider);
-        verifier.setTimePeriod(30);  // 30초 유효시간
-
-        // 현재 시간 기준으로 secret과 inputCode를 비교하여 일치하면 true 반환
-        return verifier.isValidCode(secret, inputCode);
-    }
 }
-
