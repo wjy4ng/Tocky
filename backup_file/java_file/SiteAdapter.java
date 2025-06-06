@@ -3,7 +3,6 @@ package com.cookandroid.mobile_project;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,9 +13,8 @@ import android.os.Handler;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKey;
 
+import com.cookandroid.mobile_project.util.PrefManager;
 import com.cookandroid.mobile_project.util.TOTPUtil;
 
 import java.util.List;
@@ -38,9 +36,8 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
         this.mainHandler = mainHandler;
         this.userEmail = userEmail;
 
-        this.prefs = context.getSharedPreferences("TOTP_PREFS_" + userEmail, Context.MODE_PRIVATE);
+        this.prefs = PrefManager.getTotpPrefs(context, userEmail);
     }
-
 
     @NonNull
     @Override
@@ -51,12 +48,15 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull SiteViewHolder holder, int position) {
+        // 목록 초기 값 설정
         String site = siteList.get(position);
         holder.numberTxt.setText(String.valueOf(position + 1));
         holder.siteNameTxt.setText(site);
         holder.totpTxt.setText("미생성");
 
+        // TOTP 생성 버튼 클릭 시
         holder.generateBtn.setOnClickListener(v -> {
+            holder.generateBtn.setEnabled(false); // 버튼 연속으로 누를 경우 오류를 방지
             String key = userEmail + "_totp_secret_" + site;
             String secret = prefs.getString(key, null);
 
@@ -64,21 +64,40 @@ public class SiteAdapter extends RecyclerView.Adapter<SiteAdapter.SiteViewHolder
                 executor.execute(() -> {
                     try {
                         String code = TOTPUtil.getCurrentTOTP2(secret);
-                        mainHandler.post(() -> holder.totpTxt.setText(code));
+                        mainHandler.post(() -> {
+                            holder.totpTxt.setText(code);
+                            holder.generateBtn.setEnabled(true); // 버튼 활성화
+                        });
                     } catch (Exception e) {
-                        mainHandler.post(() -> Toast.makeText(context, "TOTP 생성 오류", Toast.LENGTH_SHORT).show());
+                        e.printStackTrace();
+                        mainHandler.post(() -> {
+                            Toast.makeText(context, "TOTP 생성 오류", Toast.LENGTH_SHORT).show();
+                            holder.generateBtn.setEnabled(true);
+                        });
+
                     }
                 });
             } else{
                 Toast.makeText(context, "해당 사이트의 secret이 없습니다.", Toast.LENGTH_SHORT).show();
+                holder.generateBtn.setEnabled(true);
             }
         });
 
+        // TOTP 삭제 버튼 클릭 시
         holder.deleteBtn.setOnClickListener(v -> {
-            prefs.edit().remove(userEmail + "_totp_secret_" + site).apply();
-            siteList.remove(position);
-            notifyItemRemoved(position);
-            notifyItemRangeChanged(position, siteList.size());
+            executor.execute(() -> {
+                String key = userEmail + "_totp_secret_" + site;
+                prefs.edit().remove(key).apply();
+
+                mainHandler.post(() -> {
+                    if (position >= 0 && position < siteList.size()){
+                        siteList.remove(position); // 데이터 리스트에서 항목 제거
+                        notifyItemRemoved(position); // RecyclerView에 알림
+                        notifyItemRangeChanged(position, siteList.size()); // 데이터 재갱신
+                        Toast.makeText(context, "삭제 완료: " + site, Toast.LENGTH_SHORT).show();
+                    }
+                });
+            });
         });
     }
 
