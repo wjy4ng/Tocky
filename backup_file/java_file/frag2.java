@@ -1,7 +1,6 @@
 package com.cookandroid.mobile_project;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -20,16 +19,13 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.security.crypto.EncryptedSharedPreferences;
-import androidx.security.crypto.MasterKey;
 
+import com.cookandroid.mobile_project.util.PrefManager;
 import com.google.zxing.integration.android.IntentIntegrator;
 import com.google.zxing.integration.android.IntentResult;
 
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.security.GeneralSecurityException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -39,8 +35,9 @@ public class frag2 extends Fragment {
     private final ExecutorService executor = Executors.newSingleThreadExecutor(); // 백그라운드 전용
     private final Handler mainHandler = new Handler(Looper.getMainLooper()); // 메인 스레드 핸들러
     private ActivityResultLauncher<Intent> qrScanLauncher;
-    private static final String PREFERENCE_NAME = "secure_prefs";
     private final List<String> siteList = new ArrayList<>(); // 삭제 버튼 클릭시 index 초기화하기 위함
+    private SharedPreferences userSecurePrefs;
+    private SharedPreferences userTotpPrefs;
 
 
     // QR 스캔 레이아웃
@@ -50,7 +47,6 @@ public class frag2 extends Fragment {
     // Recycler 레이아웃
     private RecyclerView siteRecyclerView;
     private SiteAdapter adapter;
-    private int siteIndex = 1; // 번호
 
 
     @SuppressLint("MissingInflatedId")
@@ -63,7 +59,21 @@ public class frag2 extends Fragment {
         scanButton = view.findViewById(R.id.scanBtn);
         siteRecyclerView = view.findViewById(R.id.siteRecyclerView);
 
-        setupRecyclerView();
+        // MasterKey 및 SharedPreferences 초기화
+        try {
+            userSecurePrefs = PrefManager.getSecurePrefs(requireContext());
+            String email = userSecurePrefs.getString("email", null);
+            if (email != null) {
+                userTotpPrefs = PrefManager.getTotpPrefs(requireContext(), email);
+                setupRecyclerView();
+            } else {
+                userTotpPrefs = null;
+                Toast.makeText(requireContext(), "이메일 정보를 찾을 수 없습니다.", Toast.LENGTH_SHORT).show();
+            }
+        } catch (Exception e) {
+            Toast.makeText(requireContext(), "보안 환경 초기화 실패", Toast.LENGTH_SHORT).show();
+        }
+
         setupQrScanner();
         loadSavedSites(); // 저장된 사이트 정보 복원
 
@@ -95,8 +105,7 @@ public class frag2 extends Fragment {
         );
     }
 
-    private void launcherQrScanner() { // QR 코드 스캔
-        // QR 스캔 버튼 클릭 시 카메라 열기
+    private void launcherQrScanner() { // QR 스캔 버튼 클릭 시
         IntentIntegrator integrator = IntentIntegrator.forSupportFragment(frag2.this); // frag2 설정
         integrator.setPrompt("QR 코드를 스캔하세요.");
         integrator.setBeepEnabled(false); // 비프음 제거
@@ -105,10 +114,7 @@ public class frag2 extends Fragment {
         qrScanLauncher.launch(integrator.createScanIntent());
     }
 
-
-
-    // 저장된 사이트 정보 복원하는 함수
-    private void loadSavedSites(){
+    private void loadSavedSites(){ // 저장된 사이트 정보 복원하는 함수
         SharedPreferences sharedPreferences = getUserTotpPreferences();
         siteList.clear();
 
@@ -140,6 +146,7 @@ public class frag2 extends Fragment {
                     saveSecretKey(key, secret);
 
                     mainHandler.post(()->{
+                        siteName.setText(""); // 입력 필드 초기화
                         if (!siteList.contains(finalSite)){ // 중복 사이트 방지
                             siteList.add(finalSite); // 행 추가
                             renderSiteList();
@@ -175,48 +182,35 @@ public class frag2 extends Fragment {
         return null;
     }
 
-
-    // 사이트 이름을 키로 사용해 SharedPreferences에 저장하는 함수
-    private void saveSecretKey(String key, String secret){
-        SharedPreferences sharedPreferences = getUserTotpPreferences();
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(key, secret);
-        editor.apply();
+    // TOTP 키를 EncryptedSharedPreferences에 저장하는 함수
+    private void saveSecretKey(String key, String secret) {
+        if (userTotpPrefs == null) {
+            mainHandler.post(() -> Toast.makeText(requireContext(), "로그인 정보 없음, 저장 실패", Toast.LENGTH_SHORT).show());
+            return;
+        }
+        executor.execute(() -> {
+            try {
+                userTotpPrefs.edit().putString(key, secret).apply();
+                mainHandler.post(() -> Toast.makeText(requireContext(), "비밀 키 저장됨", Toast.LENGTH_SHORT).show());
+            } catch (Exception e){
+                mainHandler.post(() -> Toast.makeText(requireContext(), "비밀키 저장 실패", Toast.LENGTH_SHORT).show());
+            }
+        });
     }
-
-    /*
-    사용자별 TOTP 별도 관리하는 함수
-    */
 
     // 로그인된 사용자 이메일을 가져오는 함수
     private String getCurrentUserEmail(){
-        try{
-            MasterKey masterKey = new MasterKey.Builder(requireContext())
-                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                    .build();
-
-            SharedPreferences securePrefs = EncryptedSharedPreferences.create(
-                    requireContext(),
-                    "secure_prefs",
-                    masterKey,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-            return securePrefs.getString("email", null);
-        } catch (GeneralSecurityException | IOException e){
-            e.printStackTrace();
-            return null;
-        }
+        if (userSecurePrefs == null) return null;
+        return userSecurePrefs.getString("email", null);
     }
 
     // 현재 로그인한 사용자의 전용 TOTP 저장소를 반환
     private SharedPreferences getUserTotpPreferences(){
-        String email = getCurrentUserEmail();
-        if (email == null || email.trim().isEmpty()){
+        if (userTotpPrefs == null) {
             Toast.makeText(requireContext(), "로그인 정보 없음", Toast.LENGTH_SHORT).show();
             throw new IllegalStateException("로그인 정보 없음");
         }
-        return requireActivity().getSharedPreferences("TOTP_PREFS_" + email, Context.MODE_PRIVATE);
+        return userTotpPrefs;
     }
 
     // XML 없이 동적으로 행을 추가하는 함수

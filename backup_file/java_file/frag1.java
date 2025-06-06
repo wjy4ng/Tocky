@@ -26,14 +26,17 @@ public class frag1 extends Fragment {
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // 뷰 초기화
         View view = inflater.inflate(R.layout.frag1, container, false);
         urlEditText = view.findViewById(R.id.urlEditText);
         loadButton = view.findViewById(R.id.loadButton);
         webView = view.findViewById(R.id.webView);
 
+        // 웹뷰에서 자바스크립트 실행 허용
         webView.getSettings().setJavaScriptEnabled(true);
         webView.setWebViewClient(new WebViewClient());
 
+        // load 버튼 클릭 시 웹뷰에 입력한 url을 로드
         loadButton.setOnClickListener(v -> {
             String input = urlEditText.getText().toString().trim();
 
@@ -70,4 +73,3 @@ public class frag1 extends Fragment {
                 });
     }
 }
-
