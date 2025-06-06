@@ -1,17 +1,10 @@
 package com.cookandroid.mobile_project;
 
-import android.app.TabActivity;
 import android.os.Bundle;
-import android.widget.TabHost;
 
-import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 import androidx.viewpager2.widget.ViewPager2;
 
-import com.cookandroid.mobile_project.R;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 
@@ -35,17 +28,20 @@ public class MainActivity extends AppCompatActivity {
         // ViewPager2에 FragmentAdapter 설정
         viewPager.setAdapter(fragmentAdapter);
 
+        // 기본 탭을 frag2로 설정
+        viewPager.setCurrentItem(1, false); // false면 애니메이션 없이 이동
+
         // TabLayout, ViewPager2 연결
         new TabLayoutMediator(tabLayout, viewPager, (tab, position) -> {
             switch (position){
                 case 0:
-                    tab.setText("탭 1");
+                    tab.setText("검색");
                     break;
                 case 1:
-                    tab.setText("탭 2");
+                    tab.setText("홈");
                     break;
                 case 2:
-                    tab.setText("탭 3");
+                    tab.setText("설정");
                     break;
             }
         }).attach();
