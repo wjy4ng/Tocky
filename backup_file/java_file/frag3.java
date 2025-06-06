@@ -18,6 +18,7 @@ import androidx.security.crypto.EncryptedSharedPreferences;
 import androidx.security.crypto.MasterKey;
 
 import com.cookandroid.mobile_project.database.DBHelper;
+import com.cookandroid.mobile_project.util.PrefManager;
 
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -37,25 +38,14 @@ public class frag3 extends Fragment {
         logoutButton = view.findViewById(R.id.logoutButton);
         deleteAccountButton = view.findViewById(R.id.deleteAccountButton);
 
-        try {
-            MasterKey masterKey = new MasterKey.Builder(requireContext())
-                    .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
-                    .build();
+        // 로그인 정보 가져오기
+        securePrefs = PrefManager.getSecurePrefs(requireContext());
 
-            securePrefs = EncryptedSharedPreferences.create(
-                    requireContext(),
-                    "secure_prefs",
-                    masterKey,
-                    EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
-                    EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM
-            );
-        } catch (GeneralSecurityException | IOException e) {
-            e.printStackTrace();
-        }
-
+        // 로그아웃과 계정 삭제를 위한 데이터베이스 접근
         dbHelper = new DBHelper(requireContext());
         database = dbHelper.getWritableDatabase();
 
+        // 로그아웃 버튼 클릭 시
         logoutButton.setOnClickListener(v -> {
             if (securePrefs != null) {
                 SharedPreferences.Editor editor = securePrefs.edit();
@@ -70,6 +60,7 @@ public class frag3 extends Fragment {
             requireActivity().finish();
         });
 
+        // 계정 삭제 버튼 클릭 시 (AlertDialog 사용)
         deleteAccountButton.setOnClickListener(v -> {
             new AlertDialog.Builder(requireContext())
                     .setTitle("계정 삭제 확인")
@@ -85,7 +76,7 @@ public class frag3 extends Fragment {
 
                                 SharedPreferences.Editor editor = securePrefs.edit();
 
-                                // TOTP 관련 키 삭제 (복호화 오류 방지용 try-catch 추가)
+                                // TOTP 관련 키 삭제
                                 try {
                                     Map<String, ?> allPrefs = securePrefs.getAll();
                                     for (String key : allPrefs.keySet()) {
