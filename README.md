@@ -22,17 +22,17 @@ QR 코드 기반 계정 등록, 암호화된 저장소, 실시간 OTP 생성 등
 
 ## 📷 앱 동작 스크린샷
 <p align="center">
-  <img src="img/splash_image.png" width="300">
-  <img src="img/login.png" width="300">
-  <img src="img/signup.png" width="300">
+  <img src="img/splash_image.png" width="250">
+  <img src="img/login.png" width="250">
+  <img src="img/signup.png" width="250">
 </p>
 
 > 스플래시 이미지 / 로그인 / 회원가입
 
 <p align="center">
-  <img src="img/tab_search.png" width="300">
-  <img src="img/tab_home.png" width="300">
-  <img src="img/tab_settings.png" width="300">
+  <img src="img/tab_search.png" width="250">
+  <img src="img/tab_home.png" width="250">
+  <img src="img/tab_settings.png" width="250">
 </p>
 
 > 검색 / 홈 / 설정
