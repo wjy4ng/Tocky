@@ -20,7 +20,7 @@ QR 코드 기반 계정 등록, 암호화된 저장소, 실시간 OTP 생성 등
 ### 2. 메인 화면 (TOTP 목록)
 - 현재 사용자 계정에 저장된 사이트 목록 표시
 - 각 항목 옆에 "생성" 버튼 → 실시간 OTP 표시
-- "+" 버튼 클릭 → QR 스캔 화면 진입
+- "QR 스캔" 버튼 클릭 → QR 스캔 화면 진입
 
 ### 3. QR 코드 스캔 및 계정 등록
 - QR을 스캔하면 자동으로 사이트 정보와 키를 추출해 등록됨
@@ -33,11 +33,16 @@ QR 코드 기반 계정 등록, 암호화된 저장소, 실시간 OTP 생성 등
 
 ## 📷 앱 동작 스크린샷
 (여기에 각 화면의 스크린샷을 순서대로 넣으세요. 예: 로그인 → 목록 → QR 스캔 → OTP 생성 화면 등)
+![로그인](img/login.png)
+![회원가입](img/signup.png)
+![메인화면](img/tab_home.png)
+![검색화면](img/tab_search.png)
+![설정화면](img/tab_settings.png)
 
 ---
 
 ## 💡 기술 스택
-- Kotlin / Java 기반 Android
+- Java 기반 Android
 - EncryptedSharedPreferences (AndroidX Security)
 - Google ML Kit Barcode Scanner (QR 코드 인식)
 - TOTP 생성 로직: RFC 6238 기반 커스텀 구현
