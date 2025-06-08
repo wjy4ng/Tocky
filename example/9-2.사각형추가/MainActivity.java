@@ -7,12 +7,14 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
+import android.view.SubMenu;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -34,8 +36,9 @@ import java.util.Currency;
 import java.util.Locale;
 
 public class MainActivity extends AppCompatActivity {
-    final static int LINE = 1, CIRCLE = 2;
+    final static int LINE=1, CIRCLE=2, RECTANGLE=3;
     static int currentShape = LINE;
+    static int currentColor = Color.BLACK;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,6 +54,13 @@ public class MainActivity extends AppCompatActivity {
         super.onCreateOptionsMenu(menu);
         menu.add(0,1,0,"선 그리기");
         menu.add(0, 2, 0, "원 그리기");
+        menu.add(0,3,0,"사각형 그리기");
+
+        SubMenu subMenu = menu.addSubMenu("색상 변경 >>");
+        subMenu.add(0,4,0,"빨강");
+        subMenu.add(0,5,0,"초록");
+        subMenu.add(0,6,0,"파랑");
+
         return true;
     }
 
@@ -62,6 +72,18 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             case 2:
                 currentShape = CIRCLE;
+                return true;
+            case 3:
+                currentShape = RECTANGLE;
+                return true;
+            case 4:
+                currentColor = Color.RED;
+                return true;
+            case 5:
+                currentColor = Color.GREEN;
+                return true;
+            case 6:
+                currentColor = Color.BLUE;
                 return true;
         }
         return super.onOptionsItemSelected(item);
@@ -84,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
 
         @SuppressLint("ClickableViewAccessibility")
         @Override
-        public bogitolean onTouchEvent(MotionEvent event) {
+        public boolean onTouchEvent(MotionEvent event) {
             switch (event.getAction()){
                 case MotionEvent.ACTION_DOWN:
                     startX = (int) event.getX();
@@ -109,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
             paint.setAntiAlias(true);
             paint.setStrokeWidth(5);
             paint.setStyle(Paint.Style.STROKE);
-            paint.setColor(Color.RED);
+            paint.setColor(currentColor);
 
             switch (currentShape){
                 case LINE:
@@ -118,6 +140,9 @@ public class MainActivity extends AppCompatActivity {
                 case CIRCLE:
                     int radius = (int) Math.sqrt(Math.pow(stopX - startX, 2) + Math.pow(stopY - startY, 2));
                     canvas.drawCircle(startX, startY, radius, paint);
+                    break;
+                case RECTANGLE:
+                    canvas.drawRect(startX, startY, stopX, stopY, paint);
                     break;
             }
         }
