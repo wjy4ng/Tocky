@@ -1,0 +1,14 @@
+<resources>
+    <string name="app_name">TOTP 생성 및 비밀번호 통합 관리 시스템</string>
+    <string name="splash_text">TOTP 생성 및 비밀번호 통합 관리 시스템</string>
+    <string name="emailEditText">이메일</string>
+    <string name="passwordEditText">비밀번호</string>
+    <string name="loginTextView">로그인</string>
+    <string name="loginButton">로그인</string>
+    <string name="signupButton">회원가입</string>
+    <string name="autologinCheckBox">자동 로그인</string>
+    <string name="findidButton">비밀번호 찾기</string>
+    <string name="appTitle">TOTP 생성 및 비밀번호 통합 관리 시스템</string>
+    <string name="confirmPasswordEditText">비밀번호 재확인</string>
+    <string name="manualTxt">"1. 아래 입력란에 TOTP를 설정하고자 하는 사이트의 별명을 짓는다.\n2. QR 스캔 버튼을 눌러 해당 사이트의 2단계 인증 QR코드를 스캔한다."</string>
+</resources>
