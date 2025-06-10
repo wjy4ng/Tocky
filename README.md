@@ -48,6 +48,7 @@ QR 코드 기반 계정 등록, 암호화된 저장소, 실시간 OTP 생성 등
 - TOTP 생성 로직: HmacSHA1 알고리즘
 - TOTP 목록 : RecyclerView
 - 비동기 처리 : ExecutorService, mainHandler
+- 계정 삭제 : AlertDialog
 
 ```kotlin
 dependencies {  
