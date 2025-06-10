@@ -41,11 +41,14 @@ QR 코드 기반 계정 등록, 암호화된 저장소, 실시간 OTP 생성 등
 
 ## 💡 기술 스택
 - Java 기반 Android
-- DBHelper (데이터베이스 관리)
-- EncryptedSharedPreferences (암호화된 정보 저장)
-- qrScanLauncher (QR 코드 인식)
-- TOTP 생성 로직: RFC 6238 기반 커스텀 구현
-- RecyclerView / ViewPager2 / Fragment 활용한 UI 구성
+- 로그인/회원가입 : SQLiteDatabases, DBHelper, SharedPreferences
+- UI 구성 : ViewPager2, TabLayout, FragmentAdapter
+- QR 스캔 : ActivityResultLauncher, IntentIntegrator
+- 비밀키 저장 : EncryptedSharedPreferences, MasterKey
+- TOTP 생성 로직: HmacSHA1 알고리즘
+- TOTP 목록 : RecyclerView
+- 비동기 처리 : ExecutorService, mainHandler
+
 ```kotlin
 dependencies {  
     implementation(libs.appcompat)  
